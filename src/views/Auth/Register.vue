@@ -27,7 +27,7 @@ const createAccount =async () => {
     localStorage.setItem('token', res.data.token)
     if(res.status=== 200) {
       if (res.data.status === 'success') {
-        await router.push('/auth/login')
+        await router.push('/')
       }
     }
   }

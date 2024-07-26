@@ -24,6 +24,7 @@ const askQuiz = async () =>{
 
   const res =await axios.post('http://127.0.0.1:8000/api/v1/chats',formdata,authHeader)
   if(res.data.status === 'success'){
+    question.value =""
     // question.value = ""; // Clear input field after sending
     emit("response", res.data.message);
   }

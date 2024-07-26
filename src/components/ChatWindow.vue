@@ -28,19 +28,21 @@ const props = defineProps({
 }
 
 .message {
-  min-width: 70%;
+  min-width: 50%;
   max-width: 80%; /* Set a maximum width for messages */
   padding: 10px;
-  border-radius: 5px;
+  //border-radius: 5px;
 }
 
 .question {
-  align-self: flex-start;
+  border-radius: 15px 15px 15px 0px;
+  align-self: flex-end;
   background-color: #f0f0f0;
 }
 
 .response {
-  align-self: flex-end;
+  border-radius: 15px 0px 15px 15px;
+  align-self:  flex-start;
   background-color: #e0f7fa;
 }
 </style>

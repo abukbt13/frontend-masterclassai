@@ -5,7 +5,7 @@ import router from './router'
 
 // Import Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.css';
-
+import 'bootstrap-icons/font/bootstrap-icons.css';
 // Import Bootstrap JS (optional, if you need Bootstrap JS components)
 import 'bootstrap/dist/js/bootstrap.bundle';
 

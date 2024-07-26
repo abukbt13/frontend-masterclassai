@@ -22,6 +22,7 @@ const login =async () => {
   formData.append('password', password.value)
   const res = await axios.post(base_url.value+'v1/auth/login',formData)
   if(res.status=== 200) {
+    localStorage.setItem('token', res.data.token)
     await router.push('/')
 
     }
