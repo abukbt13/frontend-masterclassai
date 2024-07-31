@@ -67,18 +67,22 @@ function clearThreadId(){
 const extractDate = (datetime) => {
   return datetime.substring(0, 10); // Extracts the first 10 characters, i.e., YYYY-MM-DD
 };
- function isToday(dateTimeString) {
-  // Get the current date
+
+function isToday(date) {
   const today = new Date();
-  const todayDateString = today.toISOString().split('T')[0]; // Format: 'YYYY-MM-DD'
-
-  // Extract the date from the provided datetime
-  const extractedDate = this.extractDate(dateTimeString);
-
-  // Compare extracted date with today's date
-  return extractedDate === todayDateString;
+  const inputDate = new Date(date);
+  return inputDate.toDateString() === today.toDateString();
 }
-
+function isYesterday(date) {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const inputDate = new Date(date);
+  return inputDate.toDateString() === yesterday.toDateString();
+}
+function formatDate(date) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(date).toLocaleDateString(undefined, options);
+}
 
 onMounted(()=>{
   getLatestThread()
@@ -90,6 +94,8 @@ onMounted(()=>{
 </script>
 <template>
 <!--  {{thread_id}}-->
+<!--  {{threads}}-->
+<!--  {{isToday('2024-07-03')}}-->
   <div class="body">
     <Header />
     <hr>
@@ -101,14 +107,26 @@ onMounted(()=>{
             <h3>
               Threads <i class="bi bi-plus" @click="clearThreadId"></i>
             </h3>
-           <div class="">
-             <div class="" v-if="threads.length>0">
-               <div @click="fetchActiveThread(thread.id)" class="single-thread" v-for="thread in threads" :key="thread">
-                 <p   class="p-2"> {{thread.name}}</p>
-               </div>
-             </div>
-             <div v-else class="">
-               <p>start a new chat</p>
+           <div v-if="Object.keys(threads).length > 0"  class="">
+             <div v-for="(threads, date) in threads" :key="date" class="date-section">
+               <!-- Display labels based on the date -->
+               <h3>
+                 <template v-if="isToday(date)">
+                   <span class="label today">Today</span>
+                 </template>
+                 <template v-else-if="isYesterday(date)">
+                   <span class="label yesterday">Yesterday</span>
+                 </template>
+                 <template v-else>
+                   <span class="label">{{ formatDate(date) }}</span>
+                 </template>
+               </h3>
+               <!-- Display the list of threads -->
+               <ul class="list-unstyled">
+                 <li  @click="fetchActiveThread(thread.id)"  v-for="thread in threads" :key="thread.id" class="post-item p-1 fs-5">
+                   {{ thread.name }}
+                 </li>
+               </ul>
              </div>
 
            </div>
@@ -130,10 +148,8 @@ onMounted(()=>{
 </template>
 
 <style>
-.single-thread{
-  //padding-top: 3px;
-}
-.single-thread:hover{
+
+li:hover{
   width: auto;
   padding-right: 2rem;
   background: #d6c5c5;
